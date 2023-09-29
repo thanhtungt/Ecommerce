@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forbidden</title>
+    <link rel="stylesheet" href="~/css/styles.css" />
+</head>
+<body>
+    <h1 id="forbidden-title">Forbidden</h1>
+    <p class="forbidden-message">You do not have permission to access this resource.</p>
+    <div class="back-to-login">
+        <a href="/Login" class="login-link">Go back to login</a>
+    </div>
+</body>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        text-align: center;
+        padding: 50px;
+    }
+
+    #forbidden-title {
+        color: #d9534f;
+    }
+
+    .forbidden-message {
+        font-size: 18px;
+        margin-top: 20px;
+    }
+
+    .login-link {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .login-link:hover {
+        text-decoration: underline; 
+    }
+
+    .back-to-login {
+        margin-top: 20px;
+    }
+
+</style>
+</html>
+
+

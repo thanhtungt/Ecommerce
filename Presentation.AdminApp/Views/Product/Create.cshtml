@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Presentation.Models.SubCategoryModel>
+<h2>Product Detail</h2>
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label for="productImage">Product Image</label>
+        <input name="Image" type="file" class="form-control-file" id="productImage">
+    </div>
+    <div class="form-group">
+        <label for="productName">Product Name</label>
+        <input name="Name" type="text" class="form-control" required id="productName" placeholder="Enter product name">
+    </div>
+    <div class="form-group">
+        <label for="productDescription">Description</label>
+        <textarea name="Description" class="form-control" id="productDescription" required rows="4" placeholder="Enter product description"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="productPrice">Price</label>
+        <input name="Price" type="number" class="form-control" required id="productPrice" placeholder="Enter product price" min="0">
+    </div>
+    <div class="form-group">
+        <label for="productDiscount">Discount Percent</label>
+        <input name="DiscountPercent" type="number" class="form-control" id="productDiscount" placeholder="Enter discount percent" min="0" max="99">
+    </div>
+    <div class="form-group">
+        <label for="productstock">Stock</label>
+        <input name="Stock" type="number" class="form-control" id="productstock" placeholder="Enter discount percent" min="0">
+    </div>
+    <div class="form-check">
+        <input name="IsFeatured" type="checkbox" class="form-check-input" id="isFeatured">
+        <label class="form-check-label" for="isFeatured">Is Featured</label>
+    </div>
+
+    <div class="form-group d-none">
+        <label>Categories</label>
+        <select asp-for="@Model" id="category-multiselect" name="SelectedSubCategoryIds" multiple>
+            @foreach (var subCategory in Model)
+            {
+                <option value="@subCategory.Id" selected="@subCategory.Selected">@subCategory.Name</option>
+            }
+        </select>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary mt-3">Create</button>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $("#category-multiselect").kendoMultiSelect()
+
+    })
+
+</script>

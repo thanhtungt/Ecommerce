@@ -1,0 +1,77 @@
+﻿@using Presentation.Models;
+@model IEnumerable<Presentation.Models.OrderResponseModel>
+@{
+    ViewData["Title"] = "Order";
+}
+
+@foreach(var order in Model)
+{
+    <div class="container">
+        <div class="row alert alert-info">
+            <div class="col-md-6">
+                <p>To: @order.UserOrderInfo.Name | PhoneNumber: @order.UserOrderInfo.PhoneNumber</p>
+                <span>Order At: @order.CreateAt</span>
+            </div>
+            <div class="col-md-6">
+                <p>Address: @order.UserOrderInfo.Address, @order.UserOrderInfo.Ward, @order.UserOrderInfo.District, @order.UserOrderInfo.Province</p>
+                <span>Type: @order.UserOrderInfo.AddressType</span>
+            </div>
+            <p>Status: @OrderStatus(@order.OrderStatus)</p>
+            <ul class="list-group">
+                @foreach(var product in order.Products)
+                {
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-3" style="width: 100px">
+                                <img src="https://localhost:7107/@product.ProductImagePath" alt="Product Image" class="img-fluid">
+                            </div>
+                            <div class="col-md-5">
+                                <h5 class="mb-1">@product.Name</h5>
+                                <p class="mb-1">@product.Description</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="mb-1">Price: @product.Price</p>
+                                <p class="mb-1">Quantity: @product.Quantity</p>
+                            </div>
+                        </div>
+                    </li>
+                }
+                <h3>Total: @CalTotalPrice(order.Products)</h3>
+            </ul>
+        </div>
+    </div>
+}
+
+@functions{
+    decimal CalTotalPrice(IEnumerable<OrderProductResponseModel> products)
+    {
+        decimal total = 0;
+        foreach (var product in products)
+        {
+            total += product.Quantity * product.Price;
+        }
+        return total;
+    }
+
+    string OrderStatus(string type)
+    {
+        switch (type)
+        {
+            case "0":
+                return "INPROGRESS";
+            case "1":
+                return "CONFIRMED";
+            case "2":
+                return "SHIPPING";
+            case "3":
+                return "SUCCESS";
+            case "4":
+                return "CANCELED";
+            default: return "";
+        }
+    }
+}
+
+
+
+

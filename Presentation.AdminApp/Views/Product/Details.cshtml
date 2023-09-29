@@ -1,0 +1,63 @@
+﻿@model Presentation.AdminApp.Models.EditProductViewModel
+
+<h2>Product Detail</h2>
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+
+    @if(Model.ProductImagePath != null){
+    <div class="col-md-6">
+        <img src="https://localhost:7107/@Model.ProductImagePath" alt="Product Image" class="img-fluid">
+    </div>
+    }
+
+    <div class="form-group">
+        <label for="productImage">Product Image</label>
+        <input asp-for="Image" type="file" class="form-control-file" id="productImage">
+    </div>
+    <input asp-for="Id" type="text" class="form-control d-none" id="productName" placeholder="Enter product name">
+    <input asp-for="ProductImagePath" type="text" class="form-control d-none" id="productImage" placeholder="Enter product name">
+    <div class="form-group">
+        <label for="productName">Product Name</label>
+        <input asp-for="Name" type="text" class="form-control" id="productName" placeholder="Enter product name">
+    </div>
+    <div class="form-group">
+        <label for="productDescription">Description</label>
+        <textarea asp-for="Description" class="form-control" id="productDescription" rows="4" placeholder="Enter product description"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="productPrice">Price</label>
+        <input asp-for="Price" type="number" class="form-control" id="productPrice" placeholder="Enter product price" min="0">
+    </div>
+    <div class="form-group">
+        <label for="productStock">Stock</label>
+        <input asp-for="Stock" type="number" class="form-control" id="productStock" placeholder="Enter product stock" min="0">
+    </div>
+    <div class="form-group">
+        <label for="productDiscount">Discount Percent</label>
+        <input asp-for="DiscountPercent" type="number" class="form-control" id="productDiscount" placeholder="Enter discount percent" min="0" max="99">
+    </div>
+        <div class="form-check">
+        <input asp-for="IsFeatured" type="checkbox" class="form-check-input" id="isFeatured">
+        <label asp-for="IsFeatured" class="form-check-label" for="isFeatured">Is Featured</label>
+    </div>
+
+    <div class="form-group">
+    <label for="productDiscount">Categories</label>
+        <select asp-for="SelectedSubCategoryIds" id="category-multiselect" name="SelectedSubCategoryIds" multiple>
+            @foreach (var subCategory in Model.SubCategories)
+            {
+                <option value="@subCategory.Id" selected="@subCategory.Selected">@subCategory.Name</option>
+            }
+        </select>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary mt-3">Update Product</button>
+</form>
+
+<script>
+    $(document).ready(function(){
+        $("#category-multiselect").kendoMultiSelect()
+
+    })
+
+</script>

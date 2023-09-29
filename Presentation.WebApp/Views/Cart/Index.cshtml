@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Presentation.Models.ProductInCartModel>
+
+
+<section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row w-100">
+            <div class="col-lg-12 col-md-12 col-12">
+                <h3 class="display-5 mb-2 text-center">Shopping Cart</h3>
+                <p class="mb-5 text-center">
+                    <i class="text-info font-weight-bold">@Model.Count()</i> items in your cart
+                </p>
+                <table id="shoppingCart" class="table table-condensed table-responsive">
+                    <thead>
+                        <tr>
+                            <th style="width:60%">Product</th>
+                            <th style="width:12%">Price</th>
+                            <th style="width:10%">Quantity</th>
+                            <th style="width:16%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var product in Model)
+                        {
+                            <tr>
+                                <td data-th="Product">
+                                    <div class="row">
+                                        <div class="col-md-3 text-left">
+                                            <img src="https://localhost:7107/@product.ThumbnailImage" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                        </div>
+                                        <div class="col-md-9 text-left mt-sm-2">
+                                            <h4>@product.Name</h4>
+                                            @*<p class="font-weight-light">@product.</p>*@
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-th="Price">
+                                    @if (product.DiscountPercent > 0)
+                                    {
+                                        <span class="text-muted text-decoration-line-through">@product.Price </span>
+                                        @CalculateDiscountedPrice(product.Price, product.DiscountPercent)
+
+                                    }
+                                    else
+                                    {
+                                        @product.Price
+                                    }
+                                </td>
+                                <td data-th="Quantity">
+                                    <input type="number" class="form-control form-control-lg text-center" value="@product.Quantity">
+                                </td>
+                                <td class="actions" data-th="">
+                                    <div class="text-right">
+                                        <button class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                            <i class="fas fa-sync">+</i>
+                                        </button>
+                                        <button class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                            <i class="fas fa-trash">-</i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                <div class="float-right text-right">
+                    <h4>Subtotal:</h4>
+                    <h1>@CalculateTotalPrice(Model)</h1>
+                </div>
+            </div>
+        </div>
+
+        <form method="post" asp-action="Checkout" asp-controller="Cart">
+            <input name="userId" value="@ViewBag.UserId" class="d-none" />
+            <div class="form-group">
+                <label for="selectAddress">Select an Address:</label>
+                <select required class="form-control" id="selectAddress" name="selectedAddress">
+                    <option value="">Select an Address</option>
+                    @foreach (var address in @ViewBag.UserOrderInfo)
+                    {
+                        <option value="@address.Id">@address.Name, @address.Address, @address.Ward, @address.District, @address.Province</option>
+                    }
+                </select>
+            </div>
+            <a href="Cart/AddAddress" class="btn btn-primary my-2">Add Address</a>
+
+            <div class="row mt-4 d-flex align-items-center">
+                <div class="col-sm-6 order-md-2 text-right">
+                    <button type="submit" href="catalog.html" class="btn btn-primary mb-4 btn-lg pl-5 pr-5 ">Checkout</button>
+                </div>
+                <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
+                    <a href="/Home">
+                        <i class="fas fa-arrow-left mr-2"></i> Continue Shopping
+                    </a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</section>
+
+@functions{
+    decimal CalculateDiscountedPrice(decimal price, decimal discountPercentage)
+    {
+        return price - (price * (discountPercentage / 100));
+    }
+
+    decimal CalculateTotalPrice(IEnumerable<Presentation.Models.ProductInCartModel> model)
+    {
+        decimal total = 0;
+        foreach(var product in model)
+        {
+            total += CalculateDiscountedPrice(product.Price, product.DiscountPercent) * product.Quantity;
+        }
+        return total;
+    }
+}

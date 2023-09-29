@@ -1,0 +1,110 @@
+﻿@model Presentation.Models.LoginModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Đăng nhập</title>
+    <!-- Link to Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="path-to-your-css-folder/custom-login.css">
+</head>
+<body class="bg-primary">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
+                                <div class="card-body">
+                                    <form asp-action="Index" asp-controller="Login" method="post">
+                                        <div asp-validation-summary="All" class="text-danger"></div>
+                                        <div class="form-floating mb-3">
+                                            <label for="inputEmail">User Name</label>
+                                            <input class="form-control" asp-for="UserName" type="text" placeholder="UserName" />
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <label for="inputPassword">Password</label>
+                                            <input class="form-control" asp-for="Password" type="password" placeholder="Password" />
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                            <a class="small" href="/Login/Register">Create Account</a>
+                                            <button class="btn btn-primary" type="submit">Login</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center py-3">
+                                    <div class="small">Admin Contact</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <style>
+        /* Custom styles for the login form */
+        body {
+            background-color: #f4f4f4; /* Change the background color */
+        }
+
+        .card {
+            background-color: #fff; /* Change the card background color */
+            border: 1px solid #ccc;
+            border-radius: 10px; /* Add border-radius for rounded corners */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
+        }
+
+        .card-header {
+            background-color: #007bff; /* Change the header background color */
+            color: #fff; /* Change the header text color */
+            text-align: center;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .form-floating label {
+            color: #333; /* Change the label text color */
+        }
+
+        .form-control {
+            border-radius: 5px; /* Add border-radius to form inputs */
+        }
+
+        .btn-primary {
+            background-color: #007bff; /* Change the button background color */
+            border: none;
+            width: 100%; /* Make the button full-width */
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3; /* Change the button background color on hover */
+            }
+
+        .small {
+            color: #777; /* Change the small text color */
+        }
+
+        /* Optional: Style the validation summary */
+        .text-danger {
+            color: #dc3545; /* Change the validation summary text color */
+        }
+
+    </style>
+
+</body>
+</html>

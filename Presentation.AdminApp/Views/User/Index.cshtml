@@ -1,0 +1,124 @@
+﻿@{
+    ViewData["Title"] = "User Manager";
+    var token = @ViewBag.Token;
+    var baseurl = @ViewBag.BaseAddress;
+}
+
+<h1>User Manager</h1>
+
+<div id="product-grid"></div>
+
+<script>
+    $(document).ready(function () {
+        $("#product-grid").kendoGrid({
+            editable: true,
+            toolbar: ["save", "search"],
+            pageable: true,
+            selectable: true,
+            navigatable: true,
+            columns: [
+                { field: "userName", title: "User Name" },
+                { field: "firstName", title: "First Name" },
+                { field: "lastName", title: "LastName" },
+                { field: "dob", title: "Birthday", format: "{0:d}" },
+                { field: "email", title: "Email" },
+                { field: "phoneNumber", title: "Phone Number" },
+                { field: "isAdmin", title: "Is Admin" },
+                { command: ["destroy"], title: "Actions" },
+                
+            ],
+            dataSource: {
+                transport: {
+                    read: {
+                        url: 'https://localhost:7107/api/User/users',
+                        dataType: "json"
+                    },
+                    destroy: {
+                        url: 'https://localhost:7107/api/User',
+                        type: "DELETE",
+                        beforeSend: function (xhr) {
+                            var authToken = @Html.Raw(Json.Serialize(token));
+                            xhr.setRequestHeader('Authorization', "Bearer " + authToken);
+                        },
+                        complete: function (res) {
+                            $("#notification").data("kendoNotification").show("Delete user success", "success");
+                        },
+                        error: function (response) {
+                            $("#notification").data("kendoNotification").show("Delete items success", "error");
+                        }
+                    },
+                    update: {
+                        url: "https://localhost:7107/api/User/setAdmin",
+                        type: "POST",
+                        beforeSend: function (xhr) {
+                            var authToken = @Html.Raw(Json.Serialize(token));
+                            xhr.setRequestHeader('Authorization', "Bearer " + authToken);
+                        },
+                        complete: function (res) {
+                            $("#notification").data("kendoNotification").show("Set role user success", "success");
+                        },
+                        error: function (response) {
+                            $("#notification").data("kendoNotification").show("Delete items success", "error");
+                        }
+                    }
+                },
+                pageSize: 10,
+                schema: {
+                    model: {
+                        id: "id",
+                        fields: {
+                            id: { type: "string" },
+                            userName: { type: "string" },
+                            firstName: { type: "string" },
+                            lastName: { type: "string" },
+                            dob: { type: "date" },
+                            email: { type: "string" },
+                            phoneNumber: { type: "string" },
+                            isAdmin: { type: "boolean" }
+                        }
+                    }
+                }
+            }
+        });
+
+    })
+
+</script>
+
+<style>
+    .k-grid-header, .k-grid-footer {
+        background-color: #f0f0f0;
+        color: #333;
+    }
+
+    .k-grid tbody tr {
+        background-color: #f9f9f9;
+    }
+
+    .k-grid-toolbar .k-button {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .k-grid tbody tr:hover {
+        background-color: #e5e5e5;
+    }
+
+    .create-btn {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+        .create-btn:hover {
+            background-color: #0056b3;
+        }
+
+</style>

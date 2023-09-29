@@ -1,0 +1,146 @@
+﻿@model CreateUserOrderInfoViewModel
+
+<div class="container mt-5">
+    <h2>Address Form</h2>
+    <form method="post" asp-action="AddAddress" asp-controller="Cart">
+        <input class="d-none" name="userId" value="@ViewBag.UserId"/>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" required id="name" name="name" placeholder="Enter Name">
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="tel" class="form-control" required id="phoneNumber" name="phoneNumber" placeholder="Enter Phone Number">
+        </div>
+        <div class="form-row">
+            @*<div class="form-group col-md-4">
+                <label for="province">Province:</label>
+                <input type="text" class="form-control" id="province" name="province" placeholder="Enter Province">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="district">District:</label>
+                <input type="text" class="form-control" id="district" name="district" placeholder="Enter District">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="ward">Ward:</label>
+                <input type="text" class="form-control" id="ward" name="ward" placeholder="Enter Ward">
+            </div>*@
+            <div class="form-group">
+                <label for="province">Province:</label>
+                <select class="form-control" id="province" name="province">
+                    <!-- Populate this dynamically using JavaScript -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="district">District:</label>
+                <select class="form-control" id="district" name="district">
+                    <!-- Populate this dynamically using JavaScript -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ward">Ward:</label>
+                <select class="form-control" id="ward" name="ward">
+                    <!-- Populate this dynamically using JavaScript -->
+                </select>
+            </div>
+
+
+        </div>
+        <div class="form-group">
+            <label for="address">Address:</label>
+            <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter Address"></textarea>
+        </div>
+        <div class="form-check">
+            @*<input type="checkbox" class="form-check-input" id="isDefault" name="IsDefault">
+            <label class="form-check-label" for="isDefault">Set as Default Address</label>*@
+
+            @Html.Label("Don't show my number") 
+            @Html.CheckBoxFor(m => m.IsDefault)
+        </div>
+        <div class="form-group">
+            <label for="addressType">Address Type:</label>
+            <select class="form-control" id="addressType" name="addressType">
+                <option value="HOME">Home</option>
+                <option value="OFFICE">Work</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+@*<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>*@
+
+
+<script>
+    $(document).ready(function () {
+        // Function to populate the province dropdown
+        function populateProvinceDropdown() {
+            $.get('https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1', function (data) {
+                var $provinceSelect = $('#province');
+                $provinceSelect.empty();
+                $provinceSelect.append($('<option>').text('Select Province').val(''));
+                $.each(data.data.data, function (key, value) {
+                    $provinceSelect.append($('<option>').text(value.name).val(value.name).data("code", value.code));
+                });
+            });
+        }
+
+
+        // Function to populate the district dropdown based on the selected province
+        function populateDistrictDropdown(provinceId) {
+            $.get('https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=' + provinceId + '&limit=-1', function (data) {
+                var $districtSelect = $('#district');
+                $districtSelect.empty();
+                $districtSelect.append($('<option>').text('Select District').val(''));
+                $.each(data.data.data, function (key, value) {
+                    $districtSelect.append($('<option>').text(value.name).val(value.name).data("code", value.code));
+                });
+            });
+        }
+
+        // Function to populate the ward dropdown based on the selected district
+        function populateWardDropdown(districtId) {
+            $.get('https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=' + districtId + '&limit=-1' , function (data) {
+                var $wardSelect = $('#ward');
+                $wardSelect.empty();
+                $wardSelect.append($('<option>').text('Select Ward').val(''));
+                $.each(data.data.data, function (key, value) {
+                    $wardSelect.append($('<option>').text(value.name).val(value.name).data("code",value.code));
+                });
+            });
+        }
+
+        // Initial population of the province dropdown
+        populateProvinceDropdown();
+
+        // Event handler for when the province selection changes
+        $('#province').on('change', function () {
+
+            var selectedOption = $(this).find(':selected');
+            var code = selectedOption.data('code');
+
+
+            if (code) {
+                populateDistrictDropdown(code);
+            } else {
+                $('#district').empty();
+                $('#ward').empty();
+            }
+        });
+
+        // Event handler for when the district selection changes
+        $('#district').on('change', function () {
+            var selectedOption = $(this).find(':selected');
+            var code = selectedOption.data('code');
+            if (code) {
+                populateWardDropdown(code);
+            } else {
+                $('#ward').empty();
+            }
+        });
+    });
+
+
+
+</script>

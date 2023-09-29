@@ -1,0 +1,130 @@
+﻿@{
+    ViewData["Title"] = "Product Manager";
+    var token = @ViewBag.Token;
+}
+
+<h1>Product Manager</h1>
+<a href="Product/create" class="create-btn">Create Product</a>
+<div id="product-grid"></div>
+
+<script>
+    $(document).ready(function(){
+    $("#product-grid").kendoGrid({
+        editable: true,
+        toolbar: ["save", "search"],
+        pageable: true,
+        selectable: true,
+        navigatable: true,
+        columns: [
+            { field: "id", title: "ID", width: "fit-content" },
+            { field: "name", title: "Name" },
+            { field: "description", title: "Description" },
+            { field: "price", title: "Price" },
+            { field: "discountPercent", title: "Discount Percent" },
+            { field: "stock", title: "Stock" },
+            { field: "isFeatured", title: "Is Featured" },
+            { command: ["destroy"], title: "Actions" },
+            { command: {
+                name: "Edit",
+                text: "Edit",
+                field: "id",
+                icon: "k-icon k-i-eye",
+                click: function(e){
+                        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                        window.location = "/Product/" + dataItem.id;
+                        console.log(dataItem.id);
+                    },
+                },
+                title: "Edit",
+            },
+        ],
+        dataSource: {
+            transport: {
+                read: {
+                    url: 'https://localhost:7107/api/Product/all',
+                    dataType: "json"
+                },
+                destroy: {
+                    url: 'https://localhost:7107/api/Product',
+                    type: "DELETE",
+                    beforeSend: function(xhr) {
+                        var authToken = @Html.Raw(Json.Serialize(token));
+                        xhr.setRequestHeader('Authorization',"Bearer "+authToken);
+                    },
+                    complete: function(res){
+                        $("#notification").data("kendoNotification").show("Delete items success", "success");
+                    },
+                    error: function (response) {
+                        $("#notification").data("kendoNotification").show("Delete items success", "success");
+                    }
+                },
+                update: {
+                    contentType: "application/json",
+                    type: "PUT",
+                    url: "https://jsonplaceholder.typicode.com",
+                    data: function(e){
+                        console.log(e);
+                        return e.id;
+                    }
+                }
+            },
+        pageSize: 10,
+        schema: {
+            model: {
+                id: "id",
+                fields: {
+                    id: { type: "number" },
+                    name: { type: "string" },
+                    description: { type: "string" },
+                    price: { type: "number" },
+                    stock: { type: "number" },
+                    discountPercent: { type: "number", validation: { min: 0, max: 100 } },
+                    isFeatured: { type: "boolean" }
+                }
+            }
+        }
+        }
+    });
+
+    })
+
+</script>
+
+<style>
+    .k-grid-header, .k-grid-footer {
+        background-color: #f0f0f0;
+        color: #333;
+    }
+
+    .k-grid tbody tr {
+        background-color: #f9f9f9;
+    }
+
+    .k-grid-toolbar .k-button {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .k-grid tbody tr:hover {
+        background-color: #e5e5e5;
+    }
+
+    .create-btn {
+        display: inline-block;
+        padding: 5px 10px; 
+        background-color: #007bff; 
+        color: #fff; 
+        text-decoration: none;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .create-btn:hover {
+        background-color: #0056b3; 
+    }
+
+</style>
+
