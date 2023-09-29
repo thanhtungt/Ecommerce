@@ -52,8 +52,13 @@ namespace Presentation.WebApp.ApiServices
 
         public async Task<string> GetNumberProductInCart(string userId)
         {
+            var sessions = _httpContextAccessor
+               .HttpContext
+               .Session
+               .GetString(SystemConstants.AppSettings.Token);
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
             var response = await client.GetAsync($"/api/Cart/number/{userId}");
             var body = await response.Content.ReadAsStringAsync();
 

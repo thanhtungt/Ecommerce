@@ -1,7 +1,6 @@
 ﻿@{
     ViewData["Title"] = "User Manager";
     var token = @ViewBag.Token;
-    var baseurl = @ViewBag.BaseAddress;
 }
 
 <h1>User Manager</h1>
@@ -30,11 +29,11 @@
             dataSource: {
                 transport: {
                     read: {
-                        url: 'https://localhost:7107/api/User/users',
+                        url: '@ViewBag.BaseAddress'+'api/User/users',
                         dataType: "json"
                     },
                     destroy: {
-                        url: 'https://localhost:7107/api/User',
+                        url: '@ViewBag.BaseAddress' + 'api/User',
                         type: "DELETE",
                         beforeSend: function (xhr) {
                             var authToken = @Html.Raw(Json.Serialize(token));
@@ -48,7 +47,7 @@
                         }
                     },
                     update: {
-                        url: "https://localhost:7107/api/User/setAdmin",
+                        url: "@ViewBag.BaseAddress"+"api/User/setAdmin",
                         type: "POST",
                         beforeSend: function (xhr) {
                             var authToken = @Html.Raw(Json.Serialize(token));

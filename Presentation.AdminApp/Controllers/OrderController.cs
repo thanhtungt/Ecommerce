@@ -1,18 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Presentation.AdminApp.ApiServices;
+using Utilities.Constants;
 
 namespace Presentation.AdminApp.Controllers
 {
-    public class OrderController : Controller
+    public class OrderController : BaseController
     {
+        private readonly IConfiguration _configuration;
         private readonly IOrderApiClient _orderApiClient;
-        public OrderController(IOrderApiClient orderApiClient)
+        public OrderController(IOrderApiClient orderApiClient, IConfiguration configuration)
         {
             _orderApiClient = orderApiClient;
+            _configuration = configuration;
         }
         public async Task<IActionResult> Index()
         {
             var dw = await _orderApiClient.GetOrder();
+            ViewBag.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
             return View(dw);
         }
 

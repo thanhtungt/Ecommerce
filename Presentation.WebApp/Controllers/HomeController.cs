@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Presentation.WebApp.ApiServices;
 using Presentation.WebApp.Models;
 using System.Diagnostics;
 using System.Security.Claims;
+using Utilities.Constants;
 
 namespace Presentation.WebApp.Controllers
 {
@@ -12,16 +14,19 @@ namespace Presentation.WebApp.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IProductApiClient _productApiClient;
         private readonly ICartApiClient _cartApiClient;
+        private readonly IConfiguration _configuration;
 
-        public HomeController(ILogger<HomeController> logger, IProductApiClient productApiClient, ICartApiClient cartApiClient)
+        public HomeController(ILogger<HomeController> logger, IProductApiClient productApiClient, ICartApiClient cartApiClient, IConfiguration configuration)
         {
             _logger = logger;
             _productApiClient = productApiClient;
             _cartApiClient = cartApiClient;
+            _configuration = configuration;
         }
 
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 8)
         {
+            ViewBag.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
             if (User.Identity.IsAuthenticated)
             {
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Presentation.WebApp.ApiServices;
 using Presentation.WebApp.Models;
 using System.Security.Claims;
+using Utilities.Constants;
 
 namespace Presentation.WebApp.Controllers
 {
@@ -11,14 +13,17 @@ namespace Presentation.WebApp.Controllers
     {
         private readonly ICartApiClient _cartApiClient;
         private readonly IOrderApiClient _orderApiClient;
+        private readonly IConfiguration _configuration;
 
-        public CartController(ICartApiClient cartApiClient, IOrderApiClient orderApiClient)
+        public CartController(ICartApiClient cartApiClient, IOrderApiClient orderApiClient, IConfiguration configuration)
         {
             _cartApiClient = cartApiClient;
             _orderApiClient = orderApiClient;
+            _configuration = configuration;
         }
         public async Task<IActionResult> Index()
         {
+            ViewBag.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             var num = await _cartApiClient.GetNumberProductInCart(userId);

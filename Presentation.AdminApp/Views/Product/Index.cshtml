@@ -41,11 +41,11 @@
         dataSource: {
             transport: {
                 read: {
-                    url: 'https://localhost:7107/api/Product/all',
+                        url: '@ViewBag.BaseAddress' + 'api/Product/all',
                     dataType: "json"
                 },
                 destroy: {
-                    url: 'https://localhost:7107/api/Product',
+                    url: '@ViewBag.BaseAddress' + 'api/Product',
                     type: "DELETE",
                     beforeSend: function(xhr) {
                         var authToken = @Html.Raw(Json.Serialize(token));
@@ -58,15 +58,6 @@
                         $("#notification").data("kendoNotification").show("Delete items success", "success");
                     }
                 },
-                update: {
-                    contentType: "application/json",
-                    type: "PUT",
-                    url: "https://jsonplaceholder.typicode.com",
-                    data: function(e){
-                        console.log(e);
-                        return e.id;
-                    }
-                }
             },
         pageSize: 10,
         schema: {

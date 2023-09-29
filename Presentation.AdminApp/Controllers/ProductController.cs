@@ -2,16 +2,19 @@
 using Presentation.AdminApp.ApiServices;
 using Presentation.AdminApp.Models;
 using Presentation.Models;
+using Utilities.Constants;
 
 namespace Presentation.AdminApp.Controllers
 {
     public class ProductController : BaseController
     {
         private readonly IProductApiClient _productApiClient;
+        private readonly IConfiguration _configuration;
 
-        public ProductController(IProductApiClient productApiClient)
+        public ProductController(IProductApiClient productApiClient, IConfiguration configuration)
         {
             _productApiClient = productApiClient;
+            _configuration = configuration;
         }
 
         [HttpGet("Product")]
@@ -19,6 +22,7 @@ namespace Presentation.AdminApp.Controllers
         {
             var sessions = HttpContext.Session.GetString("Token");
             ViewBag.Token = sessions;
+            ViewBag.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
             return View();
         }
         [HttpGet("Product/{id}")]
@@ -26,6 +30,7 @@ namespace Presentation.AdminApp.Controllers
         {
             var product = await _productApiClient.GetById(id);
             var category = await _productApiClient.GetSubCategories(id);
+            ViewBag.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
 
             var model = new EditProductViewModel()
             {
@@ -88,7 +93,6 @@ namespace Presentation.AdminApp.Controllers
 
             if (!ModelState.IsValid)
             {
-                // Handle validation errors and return the form with error messages
                 return View(model);
             }
             var createModel = new CreateProductModel()
