@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<Presentation.Models.ProductInCartModel>
 
+@{
+    ViewData["Title"] = "Cart";
+}
 
 <section class="pt-5 pb-5">
     <div class="container">
@@ -46,15 +49,17 @@
                                     }
                                 </td>
                                 <td data-th="Quantity">
-                                    <input type="number" class="form-control form-control-lg text-center" value="@product.Quantity">
+                                    <input type="text" class="form-control form-control-lg text-center" value="@product.Quantity" onKeypress="event.preventDefault();">
                                 </td>
                                 <td class="actions" data-th="">
                                     <div class="text-right">
                                         <button class="btn btn-white border-secondary bg-white btn-md mb-2">
-                                            <i class="fas fa-sync">+</i>
+                                            @*<i class="fas fa-sync">+</i>*@
+                                            @Html.ActionLink("+", "ChangeQuantity", new { quantity = 1, productId = product.ProductId })
                                         </button>
                                         <button class="btn btn-white border-secondary bg-white btn-md mb-2">
-                                            <i class="fas fa-trash">-</i>
+                                            @*<i class="fas fa-trash">-</i>*@
+                                            @Html.ActionLink("-", "ChangeQuantity", new { quantity = -1, productId = product.ProductId })
                                         </button>
                                     </div>
                                 </td>

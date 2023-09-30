@@ -65,5 +65,19 @@ namespace Presentation.WebApp.Controllers
             }
             return RedirectToAction("Index", "Cart");
         }
+
+        public async Task<IActionResult> ChangeQuantity(int quantity, int productId)
+        {
+            var model = new ChangeQuantityViewModel()
+            {
+                UserId = new Guid(User.FindFirst(ClaimTypes.NameIdentifier)?.Value),
+                ProductId = productId,
+                Quantity = quantity,
+            };
+
+            await _cartApiClient.ChangeQuantity(model);
+
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -49,6 +49,22 @@ namespace Presentation.WebApp.ApiServices
             return false;
         }
 
+        public async Task<bool> ChangeQuantity(ChangeQuantityViewModel model)
+        {
+            var sessions = _httpContextAccessor
+               .HttpContext
+               .Session
+               .GetString(SystemConstants.AppSettings.Token);
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            var json = JsonConvert.SerializeObject(model);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PutAsync("api/Cart", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode) return true;
+            return false;
+        }
 
         public async Task<string> GetNumberProductInCart(string userId)
         {

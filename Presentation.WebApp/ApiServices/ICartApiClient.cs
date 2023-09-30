@@ -8,5 +8,7 @@ namespace Presentation.WebApp.ApiServices
         Task<string> GetNumberProductInCart(string userId);
         Task<bool> AddToCart(string userId, int productId);
         Task<IEnumerable<ProductInCartModel>> GetProductInCarts(string userId);
+
+        Task<bool> ChangeQuantity(ChangeQuantityViewModel model);
     }
 }

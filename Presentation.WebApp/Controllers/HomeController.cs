@@ -38,6 +38,10 @@ namespace Presentation.WebApp.Controllers
                     ViewBag.CartItemCount = num;
                 }
             }
+            if (TempData["result"] != null)
+            {
+                ViewBag.SuccessMsg = TempData["result"];
+            }
             var result = await _productApiClient.GetPagingProduct(pageIndex, pageSize);
 
             return View(result);
@@ -68,6 +72,7 @@ namespace Presentation.WebApp.Controllers
                 {
                     ViewBag.ShowNotification = true;
                     ViewBag.NotificationMessage = "Add product to cart success!";
+                    TempData["result"] = "Thêm sản phẩm vào giỏ hàng thành công";
                 }
                 else
                 {

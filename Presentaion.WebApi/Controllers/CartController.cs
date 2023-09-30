@@ -32,7 +32,7 @@ namespace Presentation.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> ChangeQuantity(AddToCartModel model)
         {
-            var result = await _cartService.AddToCartAsync(model.UserId, model.ProductId, model.Quantity);
+            var result = await _cartService.ChangeQuantityAsync(model.UserId, model.ProductId, model.Quantity);
             if (result.IsSuccessed) return StatusCode(StatusCodes.Status202Accepted);
             return BadRequest(result.Message);
         }

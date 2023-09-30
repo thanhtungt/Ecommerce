@@ -125,10 +125,40 @@
             }
         </div>
         
-
-        @*@await Component.InvokeAsync("Pager", Model)*@
     </div>
 </section>
+
+@if (ViewBag.SuccessMsg != null)
+{
+    <div id="msgAlert" class="alert alert-success position-fixed bottom-0 end-0 w-25">
+        @ViewBag.SuccessMsg
+    </div>
+}
+@section Scripts{
+    <script>
+        if (document.getElementById("msgAlert") != null) {
+            setTimeout(function () {
+                var fadeTarget = document.getElementById("msgAlert");
+                var fadeEffect = setInterval(function () {
+                    if (!fadeTarget.style.opacity) {
+                        fadeTarget.style.opacity = 1;
+                    }
+                    if (fadeTarget.style.opacity > 0) {
+                        fadeTarget.style.opacity -= 0.05;
+                    } else {
+                        clearInterval(fadeEffect);
+                    }
+                }, 100);
+            }, 2000)
+            setTimeout(function () {
+                document.getElementById("msgAlert").parentElement.removeChild(document.getElementById("msgAlert"))
+            }, 4500)
+        }
+    </script>
+}
+
+
+
 
 
 @functions{
