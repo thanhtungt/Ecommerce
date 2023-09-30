@@ -86,11 +86,10 @@ namespace Presentation.AdminApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductViewModel model)
         {
-            if (ModelState.ContainsKey("IsFeatured"))
+            if (ModelState.ContainsKey("SelectedSubCategoryIds"))
             {
-                ModelState.Remove("IsFeatured"); // Remove it from ModelState
+                ModelState.Remove("SelectedSubCategoryIds");
             }
-
             if (!ModelState.IsValid)
             {
                 return View(model);

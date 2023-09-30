@@ -10,6 +10,7 @@ using System.Text;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using Presentation.WebApp.Models;
 
 namespace Presentation.WebApp.Controllers
 {
@@ -67,6 +68,38 @@ namespace Presentation.WebApp.Controllers
             validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
             ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(jwtToken, validationParameters, out validatedToken);
             return principal;
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(ModelState);
+
+            var request = new RegisterModel()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Dob = model.Dob,
+                Email = model.Email,
+                Password = model.Password,
+                UserName = model.UserName,
+                PhoneNumber = model.PhoneNumber,
+            };
+
+            var result = await _userApiClient.Register(request);
+            if (!string.IsNullOrEmpty(result))
+            {
+                ModelState.AddModelError("", result);
+                return View();
+            }
+            return RedirectToAction("Index", "Login");
         }
     }
 }

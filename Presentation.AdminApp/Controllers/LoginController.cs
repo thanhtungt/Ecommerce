@@ -100,7 +100,7 @@ namespace Presentation.AdminApp.Controllers
             };
 
             var result = await _userApiClient.Register(request);
-            if (string.IsNullOrEmpty(result))
+            if (!string.IsNullOrEmpty(result))
             {
                 ModelState.AddModelError("", result);
                 return View();
