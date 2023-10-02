@@ -319,20 +319,23 @@ namespace Business.Domain.Catalog.ProductNP
 
                 await _unitOfWork.SaveChanageAsync();
 
-                var addList = new List<ProductInCategory>();
-
-                foreach(var cateId in categoryIdList)
+                if(categoryIdList != null)
                 {
-                    var a = new ProductInCategory()
-                    {
-                        ProductId = productId,
-                        CategoryId = cateId
-                    };
-                    addList.Add(a);
-                }
+                    var addList = new List<ProductInCategory>();
 
-                await _unitOfWork.ProductInCategoryRepository.AddRangeAsync(addList);
-                await _unitOfWork.SaveChanageAsync();
+                    foreach (var cateId in categoryIdList)
+                    {
+                        var a = new ProductInCategory()
+                        {
+                            ProductId = productId,
+                            CategoryId = cateId
+                        };
+                        addList.Add(a);
+                    }
+
+                    await _unitOfWork.ProductInCategoryRepository.AddRangeAsync(addList);
+                    await _unitOfWork.SaveChanageAsync();
+                }
                 return new ServiceSuccessResult<bool>();
             }
             catch (Exception ex)

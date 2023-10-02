@@ -16,11 +16,15 @@ namespace Data.BaseRepository
         UserOrderInformationRepository UserOrderInformationRepository { get; }
 
 
+
         #endregion
 
 
 
 
         Task<int> SaveChanageAsync();
+        Task BeginTransactionAsync();
+        Task CommitAsync();
+        Task RollbackAsync();
     }
 }

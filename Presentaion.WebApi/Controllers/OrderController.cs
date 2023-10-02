@@ -54,6 +54,17 @@ namespace Presentation.WebApi.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpDelete("{orderId}")]
+        public async Task<IActionResult> DeleteOrder([FromRoute] int orderId)
+        {
+            var result = await _orderService.DeleteOrderAsync(orderId);
+            if (result.IsSuccessed)
+            {
+                return StatusCode(StatusCodes.Status202Accepted);
+            }
+            return BadRequest(result?.Message);
+        }
+
         [HttpGet("info/{userId}")]
         public async Task<IActionResult> GetUserOrderInfo([FromRoute] Guid userId)
         {
@@ -116,7 +127,7 @@ namespace Presentation.WebApi.Controllers
         public async Task<IActionResult> SetOrderStatus([FromRoute] int orderId, [FromRoute] int orderStatus)
         {
             var enumtype = (OrderStatus)Enum.Parse(typeof(OrderStatus), orderStatus.ToString());
-            var result = await _orderService.SetOrderStatus(orderId , enumtype);
+            var result = await _orderService.SetOrderStatusAsync(orderId , enumtype);
             if (result.IsSuccessed)
             {
                 return StatusCode(StatusCodes.Status202Accepted);

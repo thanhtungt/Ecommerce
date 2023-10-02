@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Data.Entity.Migrations
 {
     /// <inheritdoc />
-    public partial class update1 : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,7 +64,7 @@ namespace Data.Entity.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SortOrder = table.Column<int>(type: "int", nullable: false),
                     IsShowOnHome = table.Column<bool>(type: "bit", nullable: false),
-                    ParentId = table.Column<int>(type: "int", nullable: true)
+                    ParentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -228,15 +228,14 @@ namespace Data.Entity.Migrations
                 name: "Carts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Carts", x => x.Id);
+                    table.PrimaryKey("PK_Carts", x => new { x.ProductId, x.UserId });
                     table.ForeignKey(
                         name: "FK_Carts_AppUsers_UserId",
                         column: x => x.UserId,
@@ -281,7 +280,7 @@ namespace Data.Entity.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 25, 15, 22, 3, 874, DateTimeKind.Local).AddTicks(8425)),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 1, 9, 23, 21, 52, 825, DateTimeKind.Local).AddTicks(2421)),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OrderStatus = table.Column<int>(type: "int", nullable: false),
                     UserOrderInfoId = table.Column<int>(type: "int", nullable: false)
@@ -331,20 +330,20 @@ namespace Data.Entity.Migrations
             migrationBuilder.InsertData(
                 table: "AppRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "926c2700-07ac-49e1-97b7-ec87090b254d", "admin", "ADMIN" });
+                values: new object[] { new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"), "ae090612-368b-4d14-bd7a-adb02e8c27a6", "admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AppUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Dob", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "e1a5d6ab-d0ff-43c0-a75b-af5a06545cd4", new DateTime(2003, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), "anhvu.siron@gmail.com", true, "Anh", "Vu", false, null, "ANHVU.SIRON@GMAIL.COM", "ADMIN", "AQAAAAEAACcQAAAAEDVfdvb9KY+xrdk26EFRMpmhldy46LK71dQfiQ+ov5WpAYy/b72xJBXxJR1or1KHXA==", null, false, "", false, "admin" });
+                values: new object[] { new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"), 0, "968c0128-9811-465b-9e90-c3a8d300e86b", new DateTime(2003, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), "anhvu.siron@gmail.com", true, "Anh", "Vu", false, null, "ANHVU.SIRON@GMAIL.COM", "ADMIN", "AQAAAAEAACcQAAAAECmzTd4nIXTHvGTVuOhT2+c/11mVqhALp2U2wxoPYmLH02RAjF9/BLRy0cSOxIDKHQ==", null, false, "", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "IsShowOnHome", "Name", "ParentId", "SortOrder" },
                 values: new object[,]
                 {
-                    { 1, true, "Foo", null, 1 },
-                    { 2, true, "Bar", null, 2 },
+                    { 1, true, "Foo", 0, 1 },
+                    { 2, true, "Bar", 0, 2 },
                     { 3, true, "SubFoo1", 1, 1 },
                     { 4, true, "SubFoo2", 1, 2 },
                     { 5, true, "SubBar1", 2, 1 },
@@ -354,12 +353,12 @@ namespace Data.Entity.Migrations
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "CreateAt", "Description", "IsFeatured", "Name", "Price", "ProductImagePath", "Stock" },
-                values: new object[] { 1, new DateTime(2023, 9, 25, 15, 22, 3, 876, DateTimeKind.Local).AddTicks(4956), "Product description 1", true, "Product test 1", 100000m, null, 10 });
+                values: new object[] { 1, new DateTime(2024, 1, 9, 23, 21, 52, 827, DateTimeKind.Local).AddTicks(121), "Product description 1", true, "Product test 1", 100000m, null, 10 });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "CreateAt", "Description", "DiscountPercent", "IsFeatured", "Name", "Price", "ProductImagePath", "Stock" },
-                values: new object[] { 2, new DateTime(2023, 9, 25, 15, 22, 3, 876, DateTimeKind.Local).AddTicks(4960), "Product description 2", 10, false, "Product test 2", 200000m, null, 20 });
+                values: new object[] { 2, new DateTime(2024, 1, 9, 23, 21, 52, 827, DateTimeKind.Local).AddTicks(123), "Product description 2", 10, false, "Product test 2", 200000m, null, 20 });
 
             migrationBuilder.InsertData(
                 table: "AppUserRoles",
@@ -409,11 +408,6 @@ namespace Data.Entity.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Carts_ProductId",
-                table: "Carts",
-                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Carts_UserId",

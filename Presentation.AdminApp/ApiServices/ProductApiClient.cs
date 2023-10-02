@@ -44,6 +44,7 @@ namespace Presentation.AdminApp.ApiServices
             formData.Add(new StringContent(model.Price.ToString()), "Price");
             formData.Add(new StringContent(model.DiscountPercent.ToString()), "DiscountPercent");
             formData.Add(new StringContent(model.IsFeatured.ToString()), "IsFeatured");
+            formData.Add(new StringContent(model.Stock.ToString() ?? ""), "Stock");
 
             if (model.SelectedSubCategoryIds != null)
             {
@@ -105,6 +106,7 @@ namespace Presentation.AdminApp.ApiServices
             formData.Add(new StringContent(model.DiscountPercent.ToString()), "DiscountPercent");
             formData.Add(new StringContent(model.IsFeatured.ToString()), "IsFeatured");
             formData.Add(new StringContent(model.ProductImagePath ?? ""), "ProductImagePath");
+            formData.Add(new StringContent(model.Stock.ToString() ?? ""), "Stock");
 
             if (model.SelectedSubCategoryIds != null)
             {

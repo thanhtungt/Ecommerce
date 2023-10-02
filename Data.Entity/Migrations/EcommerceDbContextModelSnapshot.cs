@@ -53,7 +53,7 @@ namespace Data.Entity.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "3948ee9d-a4b8-41ea-84e7-d969d8d3699f",
+                            ConcurrencyStamp = "ae090612-368b-4d14-bd7a-adb02e8c27a6",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -140,7 +140,7 @@ namespace Data.Entity.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ea49fc91-78cf-4940-a931-6d3d918cba18",
+                            ConcurrencyStamp = "968c0128-9811-465b-9e90-c3a8d300e86b",
                             Dob = new DateTime(2003, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "anhvu.siron@gmail.com",
                             EmailConfirmed = true,
@@ -149,7 +149,7 @@ namespace Data.Entity.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ANHVU.SIRON@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEE9WOOQsRka44p1FMrHkCJ0n5QjnG+y3z5XIzF6uF9/3KNJASwS6pUMXKwplMDDLGg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECmzTd4nIXTHvGTVuOhT2+c/11mVqhALp2U2wxoPYmLH02RAjF9/BLRy0cSOxIDKHQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -193,7 +193,7 @@ namespace Data.Entity.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ParentId")
+                    b.Property<int>("ParentId")
                         .HasColumnType("int");
 
                     b.Property<int>("SortOrder")
@@ -265,7 +265,7 @@ namespace Data.Entity.Migrations
                     b.Property<DateTime>("CreateAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 9, 26, 8, 56, 8, 305, DateTimeKind.Local).AddTicks(7307));
+                        .HasDefaultValue(new DateTime(2024, 1, 9, 23, 21, 52, 825, DateTimeKind.Local).AddTicks(2421));
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
@@ -352,7 +352,7 @@ namespace Data.Entity.Migrations
                         new
                         {
                             Id = 1,
-                            CreateAt = new DateTime(2023, 9, 26, 8, 56, 8, 307, DateTimeKind.Local).AddTicks(3604),
+                            CreateAt = new DateTime(2024, 1, 9, 23, 21, 52, 827, DateTimeKind.Local).AddTicks(121),
                             Description = "Product description 1",
                             DiscountPercent = 0,
                             IsFeatured = true,
@@ -363,7 +363,7 @@ namespace Data.Entity.Migrations
                         new
                         {
                             Id = 2,
-                            CreateAt = new DateTime(2023, 9, 26, 8, 56, 8, 307, DateTimeKind.Local).AddTicks(3605),
+                            CreateAt = new DateTime(2024, 1, 9, 23, 21, 52, 827, DateTimeKind.Local).AddTicks(123),
                             Description = "Product description 2",
                             DiscountPercent = 10,
                             IsFeatured = false,

@@ -64,11 +64,12 @@
     $(document).ready(function () {
         // Function to populate the province dropdown
         function populateProvinceDropdown() {
-            $.get('https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1', function (data) {
+            $.get('https://provinces.open-api.vn/api/?depth=1', function (data) {
+                debugger
                 var $provinceSelect = $('#province');
                 $provinceSelect.empty();
                 $provinceSelect.append($('<option>').text('Select Province').val(''));
-                $.each(data.data.data, function (key, value) {
+                $.each(data, function (key, value) {
                     $provinceSelect.append($('<option>').text(value.name).val(value.name).data("code", value.code));
                 });
             });
@@ -77,11 +78,12 @@
 
         // Function to populate the district dropdown based on the selected province
         function populateDistrictDropdown(provinceId) {
-            $.get('https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=' + provinceId + '&limit=-1', function (data) {
+            $.get('https://provinces.open-api.vn/api/p/' + provinceId + '?depth=2', function (data) {
+                debugger
                 var $districtSelect = $('#district');
                 $districtSelect.empty();
                 $districtSelect.append($('<option>').text('Select District').val(''));
-                $.each(data.data.data, function (key, value) {
+                $.each(data.districts, function (key, value) {
                     $districtSelect.append($('<option>').text(value.name).val(value.name).data("code", value.code));
                 });
             });
@@ -89,11 +91,11 @@
 
         // Function to populate the ward dropdown based on the selected district
         function populateWardDropdown(districtId) {
-            $.get('https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=' + districtId + '&limit=-1' , function (data) {
+            $.get('https://provinces.open-api.vn/api/d/' + districtId + '?depth=2', function (data) {
                 var $wardSelect = $('#ward');
                 $wardSelect.empty();
                 $wardSelect.append($('<option>').text('Select Ward').val(''));
-                $.each(data.data.data, function (key, value) {
+                $.each(data.wards, function (key, value) {
                     $wardSelect.append($('<option>').text(value.name).val(value.name).data("code",value.code));
                 });
             });
@@ -104,7 +106,7 @@
 
         // Event handler for when the province selection changes
         $('#province').on('change', function () {
-
+            
             var selectedOption = $(this).find(':selected');
             var code = selectedOption.data('code');
 

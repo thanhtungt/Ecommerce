@@ -83,5 +83,20 @@ namespace Data.BaseRepository
         {
             return _dbContext.SaveChangesAsync();
         }
+
+        public async Task BeginTransactionAsync()
+        {
+            await _dbContext.Database.BeginTransactionAsync();
+        }
+
+        public async Task CommitAsync()
+        {
+            await _dbContext.Database.CommitTransactionAsync();
+        }
+
+        public async Task RollbackAsync()
+        {
+            await _dbContext.Database.RollbackTransactionAsync();
+        }
     }
 }

@@ -4,6 +4,8 @@
     ViewData["Title"] = "Order";
 }
 
+<h2>Order</h2>
+
 @foreach(var order in Model)
 {
     <div class="container">
@@ -16,7 +18,11 @@
                 <p>Address: @order.UserOrderInfo.Address, @order.UserOrderInfo.Ward, @order.UserOrderInfo.District, @order.UserOrderInfo.Province</p>
                 <span>Type: @order.UserOrderInfo.AddressType</span>
             </div>
-            <p>Status: @OrderStatus(@order.OrderStatus)</p>
+            @if (@order.OrderStatus == "4")
+            {
+                <p>Status: CANCELED</p>
+            }
+            <nav id="order-stepper-@order.OrderId.ToString()"></nav>
             <ul class="list-group">
                 @foreach(var product in order.Products)
                 {
@@ -36,11 +42,35 @@
                         </div>
                     </li>
                 }
-                <h3>Total: @CalTotalPrice(order.Products)</h3>
             </ul>
+            <h3>Total: @CalTotalPrice(order.Products)</h3>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            $("#order-stepper-@order.OrderId.ToString()").kendoStepper({
+                steps: [{
+                    label: "INPROGRESS",
+                    selected: @order.OrderStatus == "0"
+                }, {
+                    label: "CONFIRMED",
+                    selected: @order.OrderStatus == "1"
+                }, {
+                    label: "SHIPPING",
+                    selected: @order.OrderStatus == "2"
+                }, {
+                    label: "SUCCESS",
+                    selected: @order.OrderStatus == "3"
+                }]
+            });
+
+            var stepper = $("#order-stepper-@order.OrderId.ToString()").data("kendoStepper");
+            stepper.enable(false);
+        });
+    </script>
 }
+
+
 
 @functions{
     decimal CalTotalPrice(IEnumerable<OrderProductResponseModel> products)
@@ -53,23 +83,7 @@
         return total;
     }
 
-    string OrderStatus(string type)
-    {
-        switch (type)
-        {
-            case "0":
-                return "INPROGRESS";
-            case "1":
-                return "CONFIRMED";
-            case "2":
-                return "SHIPPING";
-            case "3":
-                return "SUCCESS";
-            case "4":
-                return "CANCELED";
-            default: return "";
-        }
-    }
+    
 }
 
 

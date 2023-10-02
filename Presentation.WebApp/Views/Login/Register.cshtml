@@ -1,0 +1,76 @@
+﻿@model Presentation.WebApp.Models.RegisterViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Registration</title>
+    <!-- Link to Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="path-to-your-css-folder/custom-registration.css">
+</head>
+<body class="bg-primary">
+    <div id="layoutRegistration">
+        <div id="layoutRegistration_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header"><h3 class="text-center font-weight-light my-4">Register</h3></div>
+                                <div class="card-body">
+                                    <form asp-action="Register" asp-controller="Login" method="post">
+                                        <div asp-validation-summary="All" class="text-danger"></div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="FirstName">First Name</label>
+                                                <input class="form-control" asp-for="FirstName" type="text" placeholder="First Name" required />
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="LastName">Last Name</label>
+                                                <input class="form-control" asp-for="LastName" type="text" placeholder="Last Name" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Dob">Date of Birth</label>
+                                            <input class="form-control" asp-for="Dob" type="date" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Email">Email</label>
+                                            <input class="form-control" asp-for="Email" type="email" placeholder="Email" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="PhoneNumber">Phone Number</label>
+                                            <input class="form-control" asp-for="PhoneNumber" type="tel" placeholder="Phone Number" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="UserName">User Name</label>
+                                            <input class="form-control" asp-for="UserName" type="text" placeholder="User Name" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Password">Password</label>
+                                            <input class="form-control" asp-for="Password" type="password" placeholder="Password" required />
+                                        </div>
+                                        <button class="btn btn-primary btn-block" type="submit">Register</button>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center py-3">
+                                    <div class="small">Already have an account? <a href="/Login/Index">Login</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

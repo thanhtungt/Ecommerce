@@ -30,5 +30,12 @@ namespace Presentation.AdminApp.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> DeleteOrder(int orderId)
+        {
+            await _orderApiClient.DeleteOrder(orderId);
+
+            return RedirectToAction("Index");
+        }
     }
 }

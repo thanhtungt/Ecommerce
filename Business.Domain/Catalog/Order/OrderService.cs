@@ -2,6 +2,7 @@
 using Data.BaseRepository;
 using Data.Entity.Enums;
 using Data.Entity.Models;
+using Microsoft.EntityFrameworkCore.Storage;
 using Utilities.ServiceResult;
 
 namespace Business.Domain.Catalog.OrderNP
@@ -17,6 +18,7 @@ namespace Business.Domain.Catalog.OrderNP
 
         public async Task<ServiceResult<bool>> CreateOrderAsync(Guid userId, int addressId)
         {
+            await _unitOfWork.BeginTransactionAsync();
             try
             {
                 /* var productincart = await _unitOfWork.CartRepository.GetManyAsync(x=>x.UserId)*/
@@ -32,24 +34,24 @@ namespace Business.Domain.Catalog.OrderNP
                     OrderStatus = OrderStatus.INPROGRESS,
                     UserOrderInfoId = addressId
                 };
-                
+
                 await _unitOfWork.OrderRepository.AddAsync(order);
 
                 await _unitOfWork.SaveChanageAsync();
 
                 var orderDetail = new List<OrderDetail>();
-                var cart =  new List<Cart>();
+                var cart = new List<Cart>();
 
                 foreach (var x in query)
                 {
-                    var a = new OrderDetail()
+                    var orderdetail = new OrderDetail()
                     {
                         OrderId = order.Id,
                         ProductId = x.p.Id,
                         Quantity = x.c.Quantity,
                         Price = x.p.Price - (x.p.Price * (x.p.DiscountPercent / 100))
                     };
-                    orderDetail.Add(a);
+                    orderDetail.Add(orderdetail);
 
                     cart.Add(x.c);
                 }
@@ -59,10 +61,12 @@ namespace Business.Domain.Catalog.OrderNP
 
                 await _unitOfWork.SaveChanageAsync();
 
+                await _unitOfWork.CommitAsync();
                 return new ServiceSuccessResult<bool>();
             }
             catch (Exception ex)
             {
+                await _unitOfWork.RollbackAsync();
                 return new ServiceErrorResult<bool>(ex.Message);
             }
         }
@@ -101,6 +105,23 @@ namespace Business.Domain.Catalog.OrderNP
             {
                 return new ServiceErrorResult<bool>(ex.Message);
             }
+        }
+
+        public async Task<ServiceResult<bool>> DeleteOrderAsync(int orderId)
+        {
+            try
+            {
+                var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
+                _unitOfWork.OrderRepository.Remove(order);
+                await _unitOfWork.SaveChanageAsync();
+                new ServiceSuccessResult<bool>(true);
+            }catch (Exception ex)
+            {
+                return new ServiceErrorResult<bool>(ex.Message);
+            }
+
+
+            throw new NotImplementedException();
         }
 
         public async Task<ServiceResult<bool>> DeleteUserOrderInfoAsync(int id)
@@ -262,7 +283,7 @@ namespace Business.Domain.Catalog.OrderNP
             }
         }
 
-        public async Task<ServiceResult<bool>> SetOrderStatus(int orderId, OrderStatus type)
+        public async Task<ServiceResult<bool>> SetOrderStatusAsync(int orderId, OrderStatus type)
         {
             try
             {

@@ -13,6 +13,7 @@ namespace Business.Domain.Catalog.OrderNP
         Task<ServiceResult<bool>> CreateOrderAsync(Guid userId, int addressId);
         Task<ServiceResult<IEnumerable<OrderResponseEntity>>> GetOrderByUserIdAsync(Guid userId);
         Task<ServiceResult<IEnumerable<OrderResponseEntity>>> GetOrderAsync();
-        Task<ServiceResult<bool>> SetOrderStatus(int orderId,OrderStatus type);
+        Task<ServiceResult<bool>> SetOrderStatusAsync(int orderId,OrderStatus type);
+        Task<ServiceResult<bool>> DeleteOrderAsync(int orderId);
     }
 }

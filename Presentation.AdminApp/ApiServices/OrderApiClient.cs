@@ -5,6 +5,8 @@ using System.Net.Http;
 using Utilities.Constants;
 using System.Text;
 using Presentation.AdminApp.Models;
+using Data.Entity.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Presentation.AdminApp.ApiServices
 {
@@ -37,6 +39,23 @@ namespace Presentation.AdminApp.ApiServices
             var result = await response.Content.ReadAsStringAsync();
 
             if(response.IsSuccessStatusCode) { return true; }
+            return false;
+        }
+
+        public async Task<bool> DeleteOrder(int orderId)
+        {
+            var sessions = _httpContextAccessor
+            .HttpContext
+            .Session
+            .GetString(SystemConstants.AppSettings.Token);
+
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+            var response = await client.DeleteAsync($"api/Order/{orderId}");
+            var result = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode) { return true; }
             return false;
         }
 

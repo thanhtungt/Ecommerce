@@ -13,6 +13,6 @@ namespace Presentation.Models
         public bool IsFeatured { get; set; }
         public string? ProductImagePath { get; set; }
         public IFormFile? Image { get; set; }
-        public List<int> SelectedSubCategoryIds { get; set; }
+        public List<int>? SelectedSubCategoryIds { get; set; }
     }
 }

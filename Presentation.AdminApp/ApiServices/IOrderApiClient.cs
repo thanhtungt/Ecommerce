@@ -6,5 +6,6 @@ namespace Presentation.AdminApp.ApiServices
     {
         Task<IEnumerable<OrderResponseModel>> GetOrder();
         Task<bool> ChangeStatusOrder(int productId, int statusCode);
+        Task<bool> DeleteOrder(int orderId);
     }
 }
